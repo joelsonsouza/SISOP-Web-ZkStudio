@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?init class="org.zkoss.zk.ui.util.Composition" arg0="/template.zul"?>
+
+<zk xmlns="http://www.zkoss.org/2005/zul"
+xmlns:h="xhtml">
+   
+    <div self="@{define(centro)}" width="100%" height="100%" 
+    apply="org.zkoss.bind.BindComposer"
+    viewModel="@id('vm') @init('control.Tabelas')" 
+    >  
+      
+    <window id="cadTabelas" title="Cadastro de Tabelas" height="200px" width="400px" position="center"  border="1" closable="true"
+        onCreate="cadTabelas.doOverlapped();" onClose="self.visible=false;event.stopPropagation()" >
+        
+        <div style="background-color:#828282;" height="33px" >
+                    <toolbarbutton id="inc" label="" onClick="@command('incluir')" image="/widgets/imagens/incluir.png"  width="40px" height="30px" />
+                    <toolbarbutton id="edi" label="" onClick="@command('incluir')" image="/widgets/imagens/salvar.png"  width="40px" height="30px" />
+                    <toolbarbutton id="del" label="" onClick="@command('delete')" image="/widgets/imagens/apagar.png"  width="40px" height="30px"/>
+                    <toolbarbutton id="pes" label="" onClick="@command('pesquisar')" image="/widgets/imagens/pesquisar.png"  width="40px" height="30px" />
+                    <toolbarbutton id="lim" label="" onClick="@command('limpar')" image="/widgets/imagens/limpar.png"  width="40px" height="30px"/>
+                    <toolbarbutton id="imp" label="" image="/widgets/imagens/imprimir.png"  width="40px" height="30px"/>
+                    <toolbarbutton id="exi" label="" onClick="cadTabelas.visible=false" image="/widgets/imagens/sair.png"  width="40px" height="30px"/>
+        </div>
+        <h:br/>
+
+        <vlayout>
+            <hlayout> 
+                <label>Tipo:</label> 
+                <combobox id="tipo" width="150px" value="@bind(vm.selected.tipo)" >
+                    <comboitem label="GASTO"/>
+                    <comboitem label="RENDA"/>                   
+                </combobox>     
+            </hlayout>  
+            <hlayout>
+                <label>Descrição:</label> 
+                <textbox id='desc' value="@bind(vm.selected.descricaotipo)" width="150px" /> 
+            </hlayout> 
+            <hlayout>
+                <label>Período:</label> 
+                <combobox id="periodo" width="150px" value="@bind(vm.selected.periodo)" >
+                    <comboitem label="EVENTUAL" />
+                    <comboitem label="FIXO" />             
+                </combobox>
+            </hlayout>   
+        </vlayout>
+    </window>
+    
+    <window id="Pesq" title="Tabelas Cadastradas" height="340px" width="560px" position="center, center" mode="modal" closable="true"  visible="false" onClose="self.visible=false;event.stopPropagation()"> 
+    
+       <div style="background-color:#828282;" height="33px" >
+                    <toolbarbutton id="pes" label="" onClick="@command('pesquisa')" image="/widgets/imagens/pesquisar.png"  width="40px" height="30px" />
+                    <toolbarbutton id="lim" label="" onClick="@command('limpar')" image="/widgets/imagens/limpar.png"  width="40px" height="30px"/>
+                    <toolbarbutton id="exi" label="" onClick="Pesq.visible=false" image="/widgets/imagens/sair.png"  width="40px" height="30px"/>
+        </div>
+        <listbox width="100%" height="100%" rows="5" mold="paging" pageSize="5"
+        emptyMessage="Não há Tabelas cadastradas."
+        model="@bind(vm.listaTabelas)"
+        selectedItem="@bind(vm.selected)">
+            <listhead>
+                <listheader width="280px">Descrição: 
+                    <textbox value="@bind(vm.pesqDesc)" width="210px" />
+                </listheader>
+                <listheader width="130px">Tipo:
+                        <combobox id="tipo" width="80px" value="@bind(vm.pesqTipo)">                           
+                            <comboitem label="GASTO" value="@bind(vm.pesqTipo)" />
+                            <comboitem label="RENDA" value="@bind(vm.pesqTipo)" /> 
+                        </combobox>        
+                </listheader> 
+                <listheader width="135px">Período:
+                <combobox id="periodo" width="80px" value="@bind(vm.pesqPer)">                           
+                            <comboitem label="EVENTUAL" value="@bind(vm.pesqPer)" />
+                            <comboitem label="FIXO" value="@bind(vm.pesqPer)" /> 
+                        </combobox> 
+                </listheader>       
+            </listhead>
+            <template name="model">
+                <listitem onClick="Pesq.visible=false" >
+                    <listcell label="@bind(each.descricaotipo)"> </listcell>
+                    <listcell label="@bind(each.tipo)"></listcell>
+                    <listcell label="@bind(each.periodo)"></listcell>                   
+                </listitem>
+            </template>            
+        </listbox>
+    </window>  
+    </div>
+</zk>

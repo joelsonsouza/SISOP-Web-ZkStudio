@@ -1,0 +1,160 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?init class="org.zkoss.zk.ui.util.Composition" arg0="/template.zul"?>
+
+<zk xmlns="http://www.zkoss.org/2005/zul"
+xmlns:h="xhtml">
+ <style src="/widgets/styleRM.css" />  
+<!--    <style>
+        .font  {
+	font-weight:bold;
+        color: blue;
+}</style>-->
+<!--<script type="text/javascript"> INCORPORAR JQuery AO PROJETO
+    function ResetFormValues() {
+ 
+        $(":text").each(function () {
+            $(this).val("");
+        });
+ 
+        $(":radio").each(function () {
+            $(this).prop({ checked: false })
+        });
+ 
+        $("select").each(function () {
+            $(this).val("");
+        });
+    }
+</script>-->
+
+    <div self="@{define(centro)}" width="100%" height="100%" 
+    apply="org.zkoss.bind.BindComposer"  
+    viewModel="@id('vm') @init('control.RegMovCC')"
+    >  
+   
+    <window id="RegMov" title="Registrar Movimento Bancário" height="350px" width="805px" position="center"  border="1" closable="true"
+        onCreate="RegMov.doOverlapped();" onClose="self.visible=false;event.stopPropagation()" >
+        <div style="background-color:#828282;" height="33px" >
+                    <toolbarbutton label="" onClick="@command('incluir')" image="/widgets/imagens/incluir.png"  width="40px" height="30px" />
+                    <toolbarbutton label="" onClick="@command('incluir')" image="/widgets/imagens/salvar.png"  width="40px" height="30px"/>
+                    <toolbarbutton label="" onClick="@command('delete')" image="/widgets/imagens/apagar.png"  width="40px" height="30px"/>
+                    <toolbarbutton label="" onClick="@command('pesquisa')" image="/widgets/imagens/pesquisar.png"  width="40px" height="30px"/>
+                    <toolbarbutton label="" onClick="@command('limpar')" image="/widgets/imagens/limpar.png"  width="40px" height="30px"/>
+                    <toolbarbutton label="" image="/widgets/imagens/imprimir.png"  width="40px" height="30px"/>
+                    <toolbarbutton label="" onClick="RegMov.visible=false" image="/widgets/imagens/sair.png"  width="40px" height="30px"/>
+        </div>
+        <h:br/>
+ 
+        <hbox spacing="0" width="200px" height="100%">
+            
+            <vbox spacing="0" width="200px"  heights="200px,550px" visible="true" >
+                <vlayout>
+                    <hlayout>
+                        <label>Ano:</label>                 
+                        <!--<intbox id="ano" value="@bind(vm.selected.ano)" width="40px" maxlength="4" readonly="true"/>-->
+                        <combobox id="ano" width="70px" value="@bind(vm.selected.ano)" readonly="true">
+                           <comboitem label="2017" />                                 
+                        </combobox>                                             
+                    </hlayout>
+                    <hlayout> 
+                        <label>Mês:</label> 
+                        <combobox id="mes" width="150px" value="@bind(vm.selected.mes)">
+                            <comboitem label="JANEIRO"/>
+                            <comboitem label="FEVEREIRO"/>
+                            <comboitem label="MARÇO"/>
+                            <comboitem label="ABRIL"/>     
+                            <comboitem label="MAIO"/>
+                            <comboitem label="JUNHO"/>     
+                            <comboitem label="JULHO"/>
+                            <comboitem label="AGOSTO"/>     
+                            <comboitem label="SETEMBRO"/>
+                            <comboitem label="OUTUBRO"/>     
+                            <comboitem label="NOVEMBRO"/>
+                            <comboitem label="DEZEMBRO"/>                        
+                        </combobox>     
+                    </hlayout>  
+                    <hlayout>
+                        <label>Tipo:</label> 
+                        <combobox id="tipo" width="150px" value="@bind(vm.selected.tipo)" >
+                            <comboitem label="GASTO"/>
+                            <comboitem label="RENDA"/>
+                        </combobox>
+                    </hlayout> 
+                    <hlayout>
+                        <label>Descrição:</label> 
+                        <combobox width="119px" model="@bind(vm.listaTipo)"
+                        selectedItem="@bind(vm.selected.idTipo)">
+<!--                    selectedItem="@bind(vm.descTipo)">-->
+                        <template name="model">
+                            <comboitem label="@bind(each.descricaotipo)"/>
+                        </template>
+                    </combobox>
+                    </hlayout>
+                    <hlayout>
+                        <label>Detalhar:</label> 
+                        <textbox id="det" width="127px" value="@bind(vm.selected.detalhamento)" />
+                    </hlayout>
+                    <hlayout>
+                        <label>Data:</label> 
+                        <datebox id="db" width="150px" value="@bind(vm.selected.datareg)"/>
+                    </hlayout>
+                    <hlayout>
+                        <label>Valor:</label> 
+                        <decimalbox id="val" width="70px" value="@bind(vm.selected.valor)" format="#0.00" />
+                    </hlayout>          
+                </vlayout>
+        </vbox>
+            <splitter id="s1"  collapse="before" visible="false"  />        
+            <vbox spacing="0" width="300px"  heights="200px,400px" visible="true" >
+                <listbox width="100%" height="100%" rows="5" mold="paging" pageSize="5"
+                emptyMessage="Não há Tabelas cadastradas."
+                model="@bind(vm.listaTabelas)"
+                selectedItem="@bind(vm.selected)"
+                >
+                    <listhead > 
+                        <listheader width="110px" >
+                            <label sclass="font">Mês:</label> 
+                                <combobox id="mespesq" width="70px" value="@bind(vm.pesqMes)">
+                                    <comboitem label="JAN" value="JANEIRO"/>
+                                    <comboitem label="FEV" value="FEVEREIRO"/>
+                                    <comboitem label="MAR" value="MARÇO"/>
+                                    <comboitem label="ABR" value="ABRIL"/>
+                                    <comboitem label="MAI" value="MAIO"/>
+                                    <comboitem label="JUN" value="JUNHO"/>
+                                    <comboitem label="JUL" value="JULHO"/>
+                                    <comboitem label="AGO" value="AGOSTO"/>     
+                                    <comboitem label="SET" value="SETEMBRO"/>
+                                    <comboitem label="OUT" value="OUTUBRO"/>    
+                                    <comboitem label="NOV" value="NOVEMBRO"/>
+                                    <comboitem label="DEZ" value="DEZEMBRO"/>                       
+                                </combobox>     
+                        </listheader>
+                        <listheader width="190px"> <label sclass="font">Descrição:</label> 
+                                 <combobox width="119px" model="@bind(vm.listaTipo)"
+                                    value="@bind(vm.pesqTip)">
+                                <template name="model">
+                                    <comboitem label="@bind(each.descricaotipo)"/>
+                                </template>
+                            </combobox>  
+                        </listheader> 
+                        <listheader width="230px">
+                            <label sclass="font">Detalhamento:</label>
+                         <textbox value="@bind(vm.pesqDet)" width="120px" />              
+                        </listheader> 
+                        <listheader width="50px">
+                            <label sclass="font">Valor:</label>
+                        </listheader>       
+                    </listhead>
+                    <template name="model">
+                        <listitem>
+                            <listcell label="@bind(each.mes)" ></listcell>
+                            <listcell label="@bind(each.idTipo.descricaotipo)"></listcell>
+                            <listcell label="@bind(each.detalhamento)"></listcell>
+                            <listcell label="@bind(each.valor)"> </listcell>
+                        </listitem>
+                    </template>
+                </listbox>
+            </vbox>      
+        </hbox>        
+    </window>
+    </div>
+</zk>

@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?init class="org.zkoss.zk.ui.util.Composition" arg0="/template.zul"?>
+
+<zk xmlns="http://www.zkoss.org/2005/zul"
+xmlns:h="xhtml">
+    
+    <div self="@{define(centro)}" width="100%" height="100%"
+    apply="org.zkoss.bind.BindComposer"
+    viewModel="@id('vm') @init('control.TabelasVM')"
+    >
+
+        <groupbox mold="3d" width="100%" height="100px">
+            <caption label="Pesquisa"></caption>
+            <hlayout>
+                <vlayout>
+                    <label>Descrição</label>  
+                    <textbox value="@bind(vm.pesqDesc)" />
+                </vlayout>
+                <vlayout>
+                    <label>Tipo</label>  
+                        <combobox id="periodo" width="150px" value="@bind(vm.pesqTipo)">
+                            
+                            <comboitem label="GASTO" value="@bind(vm.pesqTipo)"/>
+                            <comboitem label="RENDA" value="@bind(vm.pesqTipo)"/> 
+
+                        </combobox>
+                </vlayout>
+                <vlayout>
+                    <button label="Pesquisar" height="60px"
+                    onClick="@command('pesquisa')" />
+                </vlayout>
+                
+            </hlayout>
+ 
+        </groupbox>
+        <listbox width="100%" height="100%" rows="5" mold="paging"
+        emptyMessage="Não há Tabelas cadastradas."
+        model="@bind(vm.listaTabelas)"
+        selectedItem="@bind(vm.selected)">
+            <listhead>
+                <listheader>Descrição</listheader>
+                <listheader>Tipo</listheader> 
+                <listheader>Período</listheader>       
+            </listhead>
+            <template name="model">
+                <listitem>
+                    <listcell label="@bind(each.descricaotipo)"></listcell>
+                    <listcell label="@bind(each.tipo)"></listcell>
+                    <listcell label="@bind(each.periodo)"></listcell>
+                    
+                    
+                </listitem>
+            </template>
+            
+        </listbox>
+<!--    <button label="Novo Frete" height="60px" onClick="@command('cadFrete')" />
+    <button label="Alterar Frete" height="60px" onClick="@command('altFrete')" />
+    <button label="Apagar Frete" height="60px" onClick="@command('delFrete')" />-->
+
+    
+<!--    <window id="cadFrete" title="Frete" height="380px" width="500px" position="center, center" mode="modal" closable="true"  visible="false" onClose="self.visible=false;event.stopPropagation()"> 
+    
+        <vlayout>
+            <hlayout>
+                Descrição:
+                <textbox value="@bind(vm.selected.descricao)" />  selected: objeto instanciado da classe Frete
+            </hlayout>                          
+           <hlayout>
+                Peso:
+                <decimalbox value="@bind(vm.selected.peso)" format="#0.00" />
+            </hlayout>                   
+            <hlayout>
+                Valor:
+                <decimalbox value="@bind(vm.selected.valor)" format="#0.00" />
+            </hlayout>                           
+            <hlayout>
+                Cliente:
+                <combobox width="150px" model="@bind(vm.listaClientes)"
+                selectedItem="@bind(vm.selected.idcliente)">
+                        <template name="model">
+                            <comboitem label="@bind(each.nomecliente)"/>
+                        </template>
+                </combobox>
+            </hlayout>                  
+            <hlayout>
+                Cidade:
+                <combobox width="150px" model="@bind(vm.listaCidade)"
+                selectedItem="@bind(vm.selected.idcidade)">
+                        <template name="model">
+                            <comboitem label="@bind(each.nomecidade)"/>
+                        </template>
+                </combobox>
+            </hlayout>  
+            <hlayout>
+                <button label="Gravar" height="60px" width="130px" onClick="@command('gravarFrete')" />
+            </hlayout>                         
+        </vlayout>
+    </window>-->
+    
+    </div>
+</zk>
